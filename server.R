@@ -19,8 +19,8 @@ yPts <- runif(1000, 0, 1)
 zPts <- runif(1000, 0, 1)
 
 library(shiny)
-library(shinyRGL)
-library(rgl)
+# library(shinyRGL)
+# library(rgl)
 
 shinyServer(function(input, output) {
   
@@ -43,12 +43,12 @@ shinyServer(function(input, output) {
     plotDecisionContour(plotdata$par,expandedData(),values,input$degree,input$gridlines)
   })
   
-  output$sctPlot <- renderWebGL({
-    plotCosts(c(-20,20),c(-20,20),costfn3)
-#     points3d(xPts[1:input$pts],
-#              yPts[1:input$pts],
-#              zPts[1:input$pts])
-#     axes3d()
-  })
+#   output$sctPlot <- renderWebGL({
+#     plotCosts(c(-20,20),c(-20,20),costfn3)
+# #     points3d(xPts[1:input$pts],
+# #              yPts[1:input$pts],
+# #              zPts[1:input$pts])
+# #     axes3d()
+#   })
 
 })

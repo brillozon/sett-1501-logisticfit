@@ -2,8 +2,8 @@
 # Compute the cost function and gradient for regularized logistic regressions.
 library(fields)
 
-library(plot3D)
-library(rgl)
+# library(plot3D)
+# library(rgl)
 
 #
 # Generate a set of random points with a uniform distribution on each axis
@@ -39,28 +39,28 @@ expandFeatures <- function( points, degree=6) {
   cbind(1,points)
 }
 
-plotCosts <- function(x,y,costs,gridlines=100) {
-  gp <- matrix(0,gridlines,gridlines)
-  xrange <- range(x)
-  yrange <- range(y)
-  gridx <- seq(xrange[1],xrange[2],length.out=gridlines)
-  gridy <- seq(yrange[1],yrange[2],length.out=gridlines)
-  for(ix in 1:gridlines) {
-    for(iy in 1:gridlines) {
-      gp[ix,iy] <- costs(t(as.matrix(c(gridx[ix],gridy[iy]),1,2)))
-    }
-  }
-  
-  zlim <- range(gp)
-  zlen <- zlim[2] - zlim[1] + 1
-  colorlut <- terrain.colors(zlen)
-  col <- colorlut[ gp - zlim[1] + 1]
-  surface3d(gridx,gridy,gp,color=col,back="lines")
-  
-  #   contour(gridx,gridy,gp,nlevels=10,lwd=3,col="red",lty="dashed")
-#   M <- mesh(gridx,gridy)
-#   surf3D(M$x,M$y,gp)
-}
+# plotCosts <- function(x,y,costs,gridlines=100) {
+#   gp <- matrix(0,gridlines,gridlines)
+#   xrange <- range(x)
+#   yrange <- range(y)
+#   gridx <- seq(xrange[1],xrange[2],length.out=gridlines)
+#   gridy <- seq(yrange[1],yrange[2],length.out=gridlines)
+#   for(ix in 1:gridlines) {
+#     for(iy in 1:gridlines) {
+#       gp[ix,iy] <- costs(t(as.matrix(c(gridx[ix],gridy[iy]),1,2)))
+#     }
+#   }
+#   
+#   zlim <- range(gp)
+#   zlen <- zlim[2] - zlim[1] + 1
+#   colorlut <- terrain.colors(zlen)
+#   col <- colorlut[ gp - zlim[1] + 1]
+#   surface3d(gridx,gridy,gp,color=col,back="lines")
+#   
+#   #   contour(gridx,gridy,gp,nlevels=10,lwd=3,col="red",lty="dashed")
+# #   M <- mesh(gridx,gridy)
+# #   surf3D(M$x,M$y,gp)
+# }
 
 
 #
