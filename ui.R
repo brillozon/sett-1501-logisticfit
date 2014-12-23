@@ -14,8 +14,8 @@ shinyUI(fluidPage(
     sidebarPanel(
       sliderInput("lambda",
                   div(p("Lambda"),p("(Regularization Parameter)")),
-                  min = 0.0, max = 20.0,
-                  value = 1.0, step=0.5),
+                  min = 0.0, max = 10.0,
+                  value = 1.0, step=0.1),
       hr(),
       wellPanel(
         numericInput("degree", label = div(h4('Complexity'),p('[1-17]')),
@@ -25,17 +25,17 @@ shinyUI(fluidPage(
         numericInput("gridlines", label = div(h4('Contour Gridlines'),p('[50-200]')),
                      value = 100, min = 50, max = 200, step = 1),
         textOutput("result$convergence")
-      ),
-      sliderInput("pts", 
-                  "Number of points in 3d scatterplot:", 
-                  min = 10, 
-                  max = 1000, 
-                  value = 250)
+      )  # ,
+#       sliderInput("pts", 
+#                   "Number of points in 3d scatterplot:", 
+#                   min = 10, 
+#                   max = 1000, 
+#                   value = 250)
     ),
 
     # Show a plot of the generated distribution
     mainPanel(
-      plotOutput("distPlot",width="400px",height="400px"),
+      plotOutput("distPlot",width="600px",height="600px"),
       webGLOutput("sctPlot")
     )
   )
