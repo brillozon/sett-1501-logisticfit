@@ -71,14 +71,16 @@ plotPointsData <- function(p,v) {
   zdatay = p[v==0,2]
   odatax = p[v!=0,1]
   odatay = p[v!=0,2]
-  plot(zdatax,zdatay, pch='o')
+  plot(zdatax,zdatay,
+       xlab="Parameter1",ylab="Parameter2",
+       pch='o')
   points(odatax,odatay, pch='+')
 }
 
 #
 # Plot data points and a decision contour
 #
-plotDecisionContour <- function(theta,p,v,degree=6,gridlines=100) {
+plotDecisionContour <- function(theta,p,v,degree=6,gridlines=100,threshold=0.0) {
   plotPointsData(p[,2:3],v)
 
   gp <- matrix(0,gridlines,gridlines)
@@ -91,16 +93,16 @@ plotDecisionContour <- function(theta,p,v,degree=6,gridlines=100) {
       gp[ix,iy] <- expandFeatures(t(as.matrix(c(gridx[ix],gridy[iy]),1,2)),degree) %*% theta
     }
   }
-  contour(gridx,gridy,gp,levels=0,lwd=3,col="red",lty="dashed",add=T)
+  contour(gridx,gridy,gp,levels=threshold,lwd=3,col="red",lty="dashed",add=T)
 }
 
 #
 # Generate the sigmoid transformation of input data.
 #
-sigmoid <- function(input) {
-  result <- 1 / (1 + exp( -input))
-}
+sigmoid <- function(x) 1 / (1 + exp( -x))
 
+#
+# Cost function
 #
 # theta - p x 1 matrix of parameters to optimize
 # x     - m x p matrix of data to train with
@@ -115,7 +117,7 @@ reglogregJ <- function(theta, x, y, l) {
   h_theta <- sigmoid(x %*% theta)
   
   # m x 1 matrix - cost values for each training data element
-  terms <- -y * log(h_theta) - (1 - y) * log(1 - h_theta)
+  terms <- -y * as.numeric(log(h_theta)) - (1 - y) * as.numeric( log(1 - h_theta))
   
   # p x 1 matrix - parameters with 0 bias term
   nobias <- rbind(0,as.matrix(theta[2:length(theta)]))
@@ -123,10 +125,12 @@ reglogregJ <- function(theta, x, y, l) {
   # scalar - regularization constant for the parameters
   reg <- l * sum(nobias^2) / (2*m)
   
-  # scalar - cost of the current paramter values
+  # scalar - cost of the current parameter values
   J <- reg + sum(terms) / m
 }
 
+#
+# Cost function gradient
 #
 # theta - p x 1 matrix of parameters to optimize
 # x     - m x p matrix of data to train with
@@ -141,7 +145,7 @@ reglogregGrad <- function(theta, x, y, l) {
   nobias <- rbind(0,as.matrix(theta[2:length(theta)]))
   
   # m x 1 matrix - hypothesis function values for the training data
-  h_theta <- sigmoid(x %*% theta)
+  h_theta <- as.numeric( sigmoid(x %*% theta) )
   
   # p x 1 matrix - regularized gradients for each parameter
   grad <- (colSums(apply(x,2,'*',(h_theta - y))) + l * nobias) / m
