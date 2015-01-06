@@ -1,5 +1,6 @@
 
 # Compute the cost function and gradient for regularized logistic regressions.
+library(e1071)
 library(fields)
 library(caret)
 
