@@ -1,6 +1,7 @@
 
 # Compute the cost function and gradient for regularized logistic regressions.
 library(fields)
+library(caret)
 
 # library(plot3D)
 # library(rgl)
@@ -22,7 +23,7 @@ generatePoints <- function(amount=50, box = c(-1,1,-1,1)) {
 # the circle.
 #
 assignCategories <- function(points,threshold=0.5,center=c(0,0),radius=1) {
-  values <- matrix(0,length(points),1)
+  values <- matrix(0,dim(points)[1],1)
   d <- rdist(center,points) - radius
 }
 
@@ -31,12 +32,13 @@ assignCategories <- function(points,threshold=0.5,center=c(0,0),radius=1) {
 # specified degree.
 #
 expandFeatures <- function( points, degree=6) {
+  result <- matrix(1,dim(points)[1],1)
   for(outer in 1:degree) {
     for(inner in 0:outer) {
-      points <- cbind(points,points[,1]^(outer-inner) * points[,2]^inner)
+      result <- cbind(result,points[,1]^(outer-inner) * points[,2]^inner)
     }
   }
-  cbind(1,points)
+  result
 }
 
 # plotCosts <- function(x,y,costs,gridlines=100) {

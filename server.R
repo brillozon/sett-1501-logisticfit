@@ -38,7 +38,6 @@ shinyServer(function(input, output) {
   
   expandedTrainingData <- reactive( expandFeatures(as.matrix(trainingdata),input$degree))
   expandedValidationData <- reactive( expandFeatures(as.matrix(validationdata),input$degree))
-  initial_theta <- reactive( matrix(0,dim(expandedData())[2],1))
   
   expandedData <- reactive({
     if(input$dataset == 'training') {
@@ -47,6 +46,8 @@ shinyServer(function(input, output) {
       expandedValidationData()
     }
   })
+
+  initial_theta <- reactive( matrix(0,dim(expandedData())[2],1))
   
   confusionValues <- reactive({
     if(input$dataset == 'training') {
